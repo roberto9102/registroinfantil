@@ -20,8 +20,24 @@ class VacunaViewSet(viewsets.ModelViewSet):
             return queryset
         else: 
             return queryset.none()
+
     serializer_class = VacunaSerializer
-    permission_classes = [(EsFamiliar | EsSupervisor | EsPersonalSalud), CrearObjeto] 
+    permission_classes = [(EsFamiliar | EsSupervisor | EsPersonalSalud), PermisosVacuna, EditarVacuna]
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        if user.rol == Usuario.Rol.PERSONAL_SALUD:
+            serializer.save(personal=user.personal)
+        else:
+            serializer.save()
+
+    def perform_update(self, serializer):
+        user = self.request.user
+        if user.rol == Usuario.Rol.PERSONAL_SALUD:
+            serializer.save(personal=user.personal)
+        else:
+            serializer.save()
+
 
 class MadreViewSet(viewsets.ModelViewSet):
     queryset = Madre.objects.select_related('localidad').all()
@@ -35,7 +51,7 @@ class MadreViewSet(viewsets.ModelViewSet):
         else:
             return queryset.none()
     serializer_class = MadreSerializer
-    permission_classes = [(EsSupervisor | EsPersonalSalud | EsFamiliar), CrearObjeto]
+    permission_classes = [(EsSupervisor | EsPersonalSalud | EsFamiliar), PermisosMadre]
 
 class NinoViewSet(viewsets.ModelViewSet):
     queryset = Nino.objects.select_related('madre','localidad').all()
@@ -49,19 +65,19 @@ class NinoViewSet(viewsets.ModelViewSet):
         else:
             return queryset.none()
     serializer_class = NinoSerializer
-    permission_classes = [(EsFamiliar | EsSupervisor | EsPersonalSalud), CrearObjeto] # | es importante para que lo tome como cualquiera
+    permission_classes = [(EsFamiliar | EsSupervisor | EsPersonalSalud), PermisosNino] # | es importante para que lo tome como cualquiera
 
 class TipoVacunaViewSet(viewsets.ModelViewSet):
     queryset = TipoVacuna.objects.all()
     serializer_class = TipoVacunaSerializer
-    permission_classes = [EsSupervisor | EsPersonalSalud]
+    permission_classes = [(EsSupervisor | EsPersonalSalud), PermisosTipoVacuna]
 
 class LocalidadViewSet(viewsets.ModelViewSet):
     queryset = Localidad.objects.all()
     serializer_class = LocalidadSerializer
-    permission_classes = [EsSupervisor | EsPersonalSalud]
+    permission_classes = [(EsSupervisor | EsPersonalSalud), PermisosLocalidad]
 
 class PersonalSaludViewSet(viewsets.ModelViewSet):
     queryset = PersonalSalud.objects.select_related('localidad').all()
     serializer_class = PersonalSaludSerializer
-    permission_classes = [(EsSupervisor | EsPersonalSalud), CrearObjeto]
+    permission_classes = [(EsSupervisor | EsPersonalSalud), PermisosPersonal ]

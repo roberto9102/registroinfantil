@@ -19,6 +19,13 @@ class VacunaSerializer(serializers.ModelSerializer):
             'personal_nombre',
         ]
         read_only_fields = ['id','personal',]
+        #def create(self, validated_data):
+            #personal = validated_data.pop('personal')
+            #if personal:
+            #   vacuna = Vacuna(**validated_data)
+            #   vacuna.personal = personal
+            #   vacuna.save()
+            #   return vacuna
 
 class MadreSerializer(serializers.ModelSerializer):
     localidad_nombre = serializers.CharField(source='localidad.nombre',read_only=True)
@@ -88,3 +95,6 @@ class PersonalSaludSerializer(serializers.ModelSerializer):
             'localidad_nombre' #read
         ]
         read_only_fields = ['id',]
+
+def update(self, instance, validated_data):
+    pass
