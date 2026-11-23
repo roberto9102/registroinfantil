@@ -54,7 +54,7 @@ class MadreViewSet(viewsets.ModelViewSet):
 class NinoViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
-        queryset = Nino.objects.select_related('madre','localidad','nino').all()
+        queryset = Nino.objects.select_related('madre','localidad').all()
         user = self.request.user
         if user.rol == Usuario.Rol.SUPERVISOR: 
             return queryset

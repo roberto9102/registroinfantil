@@ -37,7 +37,16 @@ class Nino(models.Model):
     localidad = models.ForeignKey(Localidad, on_delete=models.PROTECT)
     madre = models.ForeignKey(Madre, on_delete=models.PROTECT)
     esquema_completo = models.BooleanField(default=False)
-
+    """ me falto ponerle esto
+    class Meta:
+            constraints = [
+                models.UniqueConstraint(
+                    fields=['cui'],
+                    condition=Q(cui__isnull=False),
+                    name='unique_cui_when_not_null'
+                )
+            ]
+    """
     def __str__(self):
         return f"{self.nombre}"
 
