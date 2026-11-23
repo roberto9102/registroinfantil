@@ -51,10 +51,8 @@ class UsuarioSerializer(serializers.ModelSerializer):
     def update(self, validated_data):
         password = validated_data.pop('password', None)
         instance = super().update(instance, validated_data)
-        if password: 
+        if password is not None: 
             instance.set_password(password)
-        else:
-            return 
         instance.save() 
         return instance
 

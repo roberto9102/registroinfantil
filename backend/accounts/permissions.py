@@ -8,7 +8,7 @@ class EsSupervisor(BasePermission):
 class EsFamiliar(BasePermission):
     def has_permission(self, request, view):
         return bool(request.user.is_authenticated and request.user.rol == Usuario.Rol.FAMILIAR)
-           
+
 class EsPersonalSalud(BasePermission):
     def has_permission(self, request, view):
         return bool(request.user.is_authenticated and request.user.rol == Usuario.Rol.PERSONAL_SALUD)

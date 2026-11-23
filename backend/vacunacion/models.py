@@ -52,7 +52,6 @@ class PersonalSalud(models.Model):
         return f"{self.nombre} ({self.profesion})"
 
 class Vacuna(models.Model):
-    nombre = models.CharField(max_length=100)
     nino = models.ForeignKey(Nino, on_delete=models.PROTECT)
     fecha_aplicacion = models.DateTimeField(auto_now_add=True)
     tipo_vacuna = models.ForeignKey(TipoVacuna, on_delete=models.PROTECT)

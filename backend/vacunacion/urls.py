@@ -4,8 +4,8 @@ from .views import *
 router = DefaultRouter()
 router.register('vacunas',VacunaViewSet, 'vacunas')
 router.register('madres',MadreViewSet, 'madres')
-router.register('tipovacuna',TipoVacunaViewSet, 'tipovacuna')
-router.register('localidad',LocalidadViewSet, 'localidad')
+router.register('tipovacunas',TipoVacunaViewSet, 'tipovacunas')
+router.register('localidades',LocalidadViewSet, 'localidades')
 router.register('personalsalud',PersonalSaludViewSet, 'personalsalud')
-router.register('nino',NinoViewSet, 'nino')
+router.register('ninos',NinoViewSet, 'ninos')
 urlpatterns = router.urls

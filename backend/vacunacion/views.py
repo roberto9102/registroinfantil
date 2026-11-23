@@ -8,9 +8,8 @@ from .serializers import *
 #def get_queryset queryset.filter(self.request.user.madre) 
 #puede ser declarado fuera del viewset pero es necesario llamar esa funcion desde una funcion propia del view definida getqueryset
 class VacunaViewSet(viewsets.ModelViewSet):
-    queryset = Vacuna.objects.select_related('tipo_vacuna','personal').all()
     def get_queryset(self):
-        queryset = self.queryset
+        queryset = Vacuna.objects.select_related('tipo_vacuna','personal','nino').all()
         user = self.request.user
         if user.rol == Usuario.Rol.SUPERVISOR : 
             return queryset
@@ -31,35 +30,36 @@ class VacunaViewSet(viewsets.ModelViewSet):
         else:
             serializer.save()
 
+""" No sirve de nada en verdad ya que ya esta el editar vacunas y el read only
     def perform_update(self, serializer):
         user = self.request.user
         if user.rol == Usuario.Rol.PERSONAL_SALUD:
             serializer.save(personal=user.personal)
         else:
             serializer.save()
-
-
+"""
 class MadreViewSet(viewsets.ModelViewSet):
-    queryset = Madre.objects.select_related('localidad').all()
     def get_queryset(self):
-        queryset = self.queryset
+        queryset = Madre.objects.select_related('localidad').all()
         user = self.request.user
         if user.rol == Usuario.Rol.FAMILIAR : 
-            return queryset.filter(nombre=user.madre.nombre)     
+            return queryset.filter(id=user.madre.id)     
         elif user.rol in [Usuario.Rol.SUPERVISOR, Usuario.Rol.PERSONAL_SALUD] : 
-                    return queryset
+            return queryset
         else:
             return queryset.none()
     serializer_class = MadreSerializer
     permission_classes = [(EsSupervisor | EsPersonalSalud | EsFamiliar), PermisosMadre]
 
 class NinoViewSet(viewsets.ModelViewSet):
-    queryset = Nino.objects.select_related('madre','localidad').all()
+
     def get_queryset(self):
-        queryset = self.queryset
+        queryset = Nino.objects.select_related('madre','localidad','nino').all()
         user = self.request.user
-        if user.rol == Usuario.Rol.SUPERVISOR or user.rol == Usuario.Rol.PERSONAL_SALUD: 
+        if user.rol == Usuario.Rol.SUPERVISOR: 
             return queryset
+        elif user.rol == Usuario.Rol.PERSONAL_SALUD:
+            return queryset.filter(localidad=user.personal.localidad)
         elif user.rol == Usuario.Rol.FAMILIAR : 
             return queryset.filter(madre=user.madre)     
         else:
