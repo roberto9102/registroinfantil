@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 
 # Create your models here.
 class TipoVacuna(models.Model):
@@ -6,7 +7,6 @@ class TipoVacuna(models.Model):
     edad_recomendada_meses = models.PositiveIntegerField()
     def __str__(self):
         return self.nombre
-
 
 class Localidad(models.Model):
     nombre = models.CharField(max_length=70)
@@ -37,16 +37,6 @@ class Nino(models.Model):
     localidad = models.ForeignKey(Localidad, on_delete=models.PROTECT)
     madre = models.ForeignKey(Madre, on_delete=models.PROTECT)
     esquema_completo = models.BooleanField(default=False)
-    """ me falto ponerle esto
-    class Meta:
-            constraints = [
-                models.UniqueConstraint(
-                    fields=['cui'],
-                    condition=Q(cui__isnull=False),
-                    name='unique_cui_when_not_null'
-                )
-            ]
-    """
     def __str__(self):
         return f"{self.nombre}"
 

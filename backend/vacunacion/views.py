@@ -16,7 +16,7 @@ class VacunaViewSet(viewsets.ModelViewSet):
         elif user.rol == Usuario.Rol.FAMILIAR : 
             return queryset.filter(nino__madre = user.madre)     
         elif user.rol == Usuario.Rol.PERSONAL_SALUD : 
-            return queryset
+            return queryset.filter(localidad=user.personal.localidad)
         else: 
             return queryset.none()
 
@@ -38,14 +38,17 @@ class VacunaViewSet(viewsets.ModelViewSet):
         else:
             serializer.save()
 """
+
 class MadreViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Madre.objects.select_related('localidad').all()
         user = self.request.user
         if user.rol == Usuario.Rol.FAMILIAR : 
             return queryset.filter(id=user.madre.id)     
-        elif user.rol in [Usuario.Rol.SUPERVISOR, Usuario.Rol.PERSONAL_SALUD] : 
+        elif user.rol == Usuario.Rol.SUPERVISOR : 
             return queryset
+        elif user.rol == Usuario.Rol.PERSONAL_SALUD:
+            return queryset.filter(localidad=user.personal.localidad)
         else:
             return queryset.none()
     serializer_class = MadreSerializer
