@@ -2,7 +2,6 @@ from rest_framework import serializers
 from .models import Usuario
 from django.contrib.auth.password_validation import validate_password
 
-
 class UsuarioSerializer(serializers.ModelSerializer):
 
     password = serializers.CharField(write_only=True,required=True)
@@ -49,7 +48,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
         usuario.save()
         return usuario
 
-    def update(self, validated_data):
+    def update(self,instance ,validated_data):
         password = validated_data.pop('password', None)
         instance = super().update(instance, validated_data)
         if password is not None: 
