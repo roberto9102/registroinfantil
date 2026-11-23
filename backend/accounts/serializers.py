@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Usuario
+from django.contrib.auth.password_validation import validate_password
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
@@ -56,3 +57,6 @@ class UsuarioSerializer(serializers.ModelSerializer):
         instance.save() 
         return instance
 
+    def validate_password(self, value):
+        validate_password(value)
+        return value
