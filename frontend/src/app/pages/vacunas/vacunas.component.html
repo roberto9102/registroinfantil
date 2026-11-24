@@ -1,1 +1,25 @@
-<p>vacunas works!</p>
+<h1>Vacunas aplicadas</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Nombre</th>
+      <th>Vacuna</th>
+      <th>Personal</th>
+      <th>Fecha</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (vacuna of vacunas; track vacuna.id) {
+      <tr>
+        <td>{{ vacuna.id }}</td>
+        <td>{{ vacuna.nino_nombre }}</td>
+        <td>{{ vacuna.tipo_vacuna }}</td>
+        <td>{{ vacuna.personal_nombre }}</td>
+        <td>{{ vacuna.fecha_aplicacion }}</td>
+      </tr>
+    }
+  </tbody>
+</table>

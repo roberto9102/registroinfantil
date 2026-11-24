@@ -19,6 +19,10 @@ class VacunaSerializer(serializers.ModelSerializer):
             'personal_nombre',
         ]
         read_only_fields = ['id','personal',]
+        def validate_cui(self, value):
+            if value == "":
+                return None
+            return value
 
 class MadreSerializer(serializers.ModelSerializer):
     localidad_nombre = serializers.CharField(source='localidad.nombre',read_only=True)

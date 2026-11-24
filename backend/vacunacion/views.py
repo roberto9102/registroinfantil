@@ -16,7 +16,7 @@ class VacunaViewSet(viewsets.ModelViewSet):
         elif user.rol == Usuario.Rol.FAMILIAR : 
             return queryset.filter(nino__madre = user.madre)     
         elif user.rol == Usuario.Rol.PERSONAL_SALUD : 
-            return queryset.filter(localidad=user.personal.localidad)
+            return queryset.filter(nino__localidad=user.personal.localidad)
         else: 
             return queryset.none()
 

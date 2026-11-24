@@ -11,13 +11,17 @@ export class VacunasComponent {
 
   vacunas: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    
+  }
   
     ngOnInit() {
+    const token = sessionStorage.getItem('access');
     this.http.get<any[]>(
-      'http://127.0.0.1:8000/api/vacunas/'
+      'http://127.0.0.1:8000/api/vacunas/',
+        {headers: { Authorization: `Bearer ${token}` }}
     ).subscribe(data => {
-      this.vacunas = data;
+          this.vacunas = data;
     });
   }
 }
