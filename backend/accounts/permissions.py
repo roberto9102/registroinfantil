@@ -48,7 +48,7 @@ class PermisosVacuna(BasePermission):
 class PermisosLocalidad(BasePermission):
     def has_permission(self, request, view): 
         if view.action in ['list', 'retrieve']: 
-            return True
+            return request.user.rol in [Usuario.Rol.SUPERVISOR, Usuario.Rol.PERSONAL_SALUD] 
         else: 
             return request.user.rol in [Usuario.Rol.SUPERVISOR] 
 
